@@ -16,7 +16,6 @@ $(OUT_PATH)/epd_bwr_213.o \
 $(OUT_PATH)/epd_bwr_350.o \
 $(OUT_PATH)/epd_bwy_350.o \
 $(OUT_PATH)/epd_bw_213_ice.o \
-$(OUT_PATH)/epd_bwr_154.o \
 $(OUT_PATH)/ota.o \
 $(OUT_PATH)/led.o \
 $(OUT_PATH)/uart.o \
