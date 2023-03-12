@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "application/print/u_printf.h"
 #include "etime.h"
 #include "tl_common.h"
 #include "main.h"
@@ -398,55 +399,55 @@ void epd_display_time_with_date(struct date_time _time, uint16_t battery_mv, int
     char buff[100];
     battery_level = get_battery_level(battery_mv);
 
-    sprintf(buff, "S24_%02X%02X%02X", mac_public[2], mac_public[1], mac_public[0]);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 1, 17, (char *)buff, 1);
+    sprintf(buff, "S24_%02X%02X%02X", mac_public[2], mac_public[1], mac_public[0]); //蓝牙名称
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 0, 17, (char *)buff, 1);
 
     if (ble_get_connected()) {
-        sprintf(buff, "78%s", "234");
+        sprintf(buff, "78%s", "234"); //"蓝牙已连接"
     } else {
-        sprintf(buff, "78%s", "56");
+        sprintf(buff, "78%s", "56");  //"蓝牙断开"
     }
 
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 120, 21, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 100, 21, (char *)buff, 1); 
 
-    obdRectangle(&obd, 252, 10, 255, 14, 1, 1);
-    obdRectangle(&obd, 255, 2, 295, 22, 1, 1);
+    obdRectangle(&obd, 205, 10, 207, 14, 1, 1);
+    obdRectangle(&obd, 207, 2, epd_width - 1, 22, 1, 1);
 
     sprintf(buff, "%d", battery_level);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 259, 18, (char *)buff, 0);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 210, 18, (char *)buff, 0);
 
-    obdRectangle(&obd, 0, 25, 295, 27, 1, 1);
+    obdRectangle(&obd, 0, 25, epd_width - 1, 27, 1, 1);
 
     sprintf(buff, "%02d:%02d", _time.tm_hour, _time.tm_min);
-    obdWriteStringCustom(&obd, (GFXfont *)&DSEG14_Classic_Mini_Regular_40, 35, 85, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&DSEG14_Classic_Mini_Regular_40, 10, 85, (char *)buff, 1);
 
     sprintf(buff, "   %d'C", EPD_read_temp());
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 216, 50, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 180, 50, (char *)buff, 1);
 
-    obdRectangle(&obd, 216, 60, 295, 62, 1, 1);
+    obdRectangle(&obd, 170, 60, epd_width - 1, 62, 1, 1);
 
     sprintf(buff, " %dmV", battery_mv);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 216, 84, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 170, 84, (char *)buff, 1);
 
-    obdRectangle(&obd, 214, 27, 216, 99, 1, 1);
-    obdRectangle(&obd, 0, 97, 295, 99, 1, 1);
+    obdRectangle(&obd, 170, 27, 172, 99, 1, 1);
+    obdRectangle(&obd, 0, 97, epd_width - 1, 99, 1, 1);
 
     sprintf(buff, "%d-%02d-%02d", _time.tm_year, _time.tm_month, _time.tm_day);
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 10, 120, (char *)buff, 1);
-
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16, 0, 120, (char *)buff, 1);
+    // printf("tm_year:%d, tm_month:%d, tm_day:%d, tm_week:%d", _time.tm_year, _time.tm_month, _time.tm_day, _time.tm_week);
     if (_time.tm_week == 7) {
-        sprintf(buff, "9:%c", _time.tm_week + 0x20 + 6);
+        sprintf(buff, "9:1");
     } else {
         sprintf(buff, "9:%c", _time.tm_week + 0x20);
     }
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 120, 122, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 90, 122, (char *)buff, 1);
 
     if (_time.tm_hour > 7 && _time.tm_hour < 20) {
         sprintf(buff, "%s", "EFGH");
     } else {
         sprintf(buff, "%s", "ABCD");
     }
-    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 200, 122, (char *)buff, 1);
+    obdWriteStringCustom(&obd, (GFXfont *)&Dialog_plain_16_zh, 160, 122, (char *)buff, 1);
 
     FixBuffer(epd_temp, epd_buffer, epd_width, epd_height);
 

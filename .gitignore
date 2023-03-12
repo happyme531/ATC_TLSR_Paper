@@ -5,3 +5,5 @@ flashing
 flash.bat
 Firmware_test_gpio
 .vscode
+Firmware/.cache
+compile_commands.json
